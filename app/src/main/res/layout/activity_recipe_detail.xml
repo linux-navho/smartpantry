@@ -32,83 +32,181 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <TextView
-                android:id="@+id/tvRecipeDetailTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:layout_marginBottom="8dp" />
-
+            <!-- Recipe Title & Difficulty -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="12dp">
 
                 <TextView
-                    android:id="@+id/tvRecipeDetailMeta"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvRecipeDetailTitle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="14sp"
-                    android:layout_marginEnd="12dp" />
+                    android:layout_weight="1"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary" />
 
                 <TextView
                     android:id="@+id/tvRecipeDetailDifficulty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="2dp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
                     android:textSize="11sp"
                     android:textStyle="bold"
                     android:background="@drawable/badge_fresh"
                     android:textColor="@color/status_fresh_text" />
-
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Required Ingredients"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/brand_primary"
-                android:layout_marginBottom="10dp" />
-
+            <!-- Metrics Summary Dashboard Card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_surface_background"
+                android:orientation="horizontal"
                 android:padding="16dp"
+                android:baselineAligned="false"
                 android:layout_marginBottom="24dp">
 
-                <TextView
-                    android:id="@+id/tvRecipeDetailIngredients"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:lineSpacingExtra="6dp"
-                    android:textColor="@color/text_secondary" />
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PREP TIME"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.08"
+                        android:textColor="@color/text_tertiary" />
+
+                    <TextView
+                        android:id="@+id/tvRecipeDetailPrep"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="32dp"
+                    android:background="@color/border_subtle"
+                    android:layout_gravity="center_vertical" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PANTRY READINESS"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.08"
+                        android:textColor="@color/text_tertiary" />
+
+                    <TextView
+                        android:id="@+id/tvRecipeReadiness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_primary"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
             </LinearLayout>
 
+            <!-- Ingredients Header with Servings Scaler -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Required Ingredients"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary" />
+
+                <!-- Serving Multipliers -->
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupServings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipScale1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1x"
+                        android:checked="true"
+                        android:textSize="11sp"
+                        android:textColor="@color/text_primary"
+                        app:chipBackgroundColor="@color/bg_surface"
+                        app:chipStrokeColor="@color/border_subtle"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipScale2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2x"
+                        android:textSize="11sp"
+                        android:textColor="@color/text_primary"
+                        app:chipBackgroundColor="@color/bg_surface"
+                        app:chipStrokeColor="@color/border_subtle"
+                        app:chipStrokeWidth="1dp"
+                        style="@style/Widget.MaterialComponents.Chip.Choice" />
+                </com.google.android.material.chip.ChipGroup>
+            </LinearLayout>
+
+            <!-- Dynamic Ingredients Container -->
+            <LinearLayout
+                android:id="@+id/containerIngredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Instructions Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cooking Instructions"
-                android:textSize="16sp"
+                android:text="Preparation Steps"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                android:textColor="@color/brand_primary"
-                android:layout_marginBottom="10dp" />
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_surface_background"
-                android:padding="16dp"
-                android:layout_marginBottom="32dp">
+                android:padding="18dp"
+                android:layout_marginBottom="28dp">
 
                 <TextView
                     android:id="@+id/tvRecipeDetailInstructions"
@@ -116,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:lineSpacingExtra="6dp"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/text_secondary" />
             </LinearLayout>
 
         </LinearLayout>

@@ -160,6 +160,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<RecipeIngredientDetail> getRecipeIngredientsWithLiveStock(long recipeId) {
+        List<RecipeIngredientDetail> details = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_RECIPE_INGREDIENTS, null, COL_RI_RECIPE_ID + " = ?",
+                new String[]{String.valueOf(recipeId)}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(COL_RI_NAME));
+                double reqQty = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_RI_QUANTITY));
+                String unit = cursor.getString(cursor.getColumnIndexOrThrow(COL_RI_UNIT));
+
+                Cursor pantryCur = db.rawQuery(
+                        "SELECT SUM(" + COL_PANTRY_QUANTITY + ") FROM " + TABLE_PANTRY +
+                        " WHERE LOWER(TRIM(" + COL_PANTRY_NAME + ")) = LOWER(TRIM(?))",
+                        new String[]{name});
+
+                double available = 0.0;
+                if (pantryCur != null && pantryCur.moveToFirst()) {
+                    available = pantryCur.getDouble(0);
+                    pantryCur.close();
+                } else if (pantryCur != null) {
+                    pantryCur.close();
+                }
+
+                details.add(new RecipeIngredientDetail(name, reqQty, available, unit));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return details;
+    }
+
     public List<Recipe> getAllRecipesWithStockStatus(boolean onlyAvailable) {
         List<Recipe> recipeList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
