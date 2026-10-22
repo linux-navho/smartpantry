@@ -3,9 +3,10 @@
     <item
         android:id="@+id/nav_pantry"
         android:icon="@android:drawable/ic_menu_agenda"
-        android:title="@string/nav_pantry" />
+        android:title="@string/title_pantry" />
+
     <item
         android:id="@+id/nav_recipes"
         android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/nav_recipes" />
+        android:title="@string/title_suggested" />
 </menu>

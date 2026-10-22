@@ -10,6 +10,8 @@ public class Recipe {
     private int prepTimeMinutes;
     private String difficulty;
     private List<RecipeIngredient> ingredients;
+    private boolean isAvailable;
+    private int missingIngredientsCount;
 
     public Recipe(long id, String name, String instructions, int prepTimeMinutes, String difficulty) {
         this.id = id;
@@ -18,6 +20,8 @@ public class Recipe {
         this.prepTimeMinutes = prepTimeMinutes;
         this.difficulty = difficulty;
         this.ingredients = new ArrayList<>();
+        this.isAvailable = false;
+        this.missingIngredientsCount = 0;
     }
 
     public Recipe(String name, String instructions, int prepTimeMinutes, String difficulty) {
@@ -32,4 +36,10 @@ public class Recipe {
 
     public List<RecipeIngredient> getIngredients() { return ingredients; }
     public void setIngredients(List<RecipeIngredient> ingredients) { this.ingredients = ingredients; }
+
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+
+    public int getMissingIngredientsCount() { return missingIngredientsCount; }
+    public void setMissingIngredientsCount(int count) { this.missingIngredientsCount = count; }
 }

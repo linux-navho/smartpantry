@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -49,6 +50,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         int count = recipe.getIngredients() != null ? recipe.getIngredients().size() : 0;
         holder.tvIngredientCount.setText(count + " ingredients required");
 
+        if (recipe.isAvailable()) {
+            holder.tvStockStatus.setText("Ready to cook");
+            holder.tvStockStatus.setBackground(ContextCompat.getDrawable(context, R.drawable.badge_fresh));
+            holder.tvStockStatus.setTextColor(ContextCompat.getColor(context, R.color.status_fresh_text));
+        } else {
+            int missing = recipe.getMissingIngredientsCount();
+            holder.tvStockStatus.setText("Missing " + missing + (missing == 1 ? " item" : " items"));
+            holder.tvStockStatus.setBackground(ContextCompat.getDrawable(context, R.drawable.badge_warning));
+            holder.tvStockStatus.setTextColor(ContextCompat.getColor(context, R.color.status_warning_text));
+        }
+
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onRecipeClick(recipe);
@@ -63,6 +75,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvTitle;
+        final TextView tvStockStatus;
         final TextView tvPrepTime;
         final TextView tvDifficulty;
         final TextView tvIngredientCount;
@@ -70,6 +83,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvRecipeCardTitle);
+            tvStockStatus = itemView.findViewById(R.id.tvRecipeStockStatus);
             tvPrepTime = itemView.findViewById(R.id.tvRecipePrepTime);
             tvDifficulty = itemView.findViewById(R.id.tvRecipeDifficulty);
             tvIngredientCount = itemView.findViewById(R.id.tvRecipeIngredientCount);

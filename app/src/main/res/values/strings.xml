@@ -7,7 +7,7 @@
 
     <!-- Screen Titles -->
     <string name="title_pantry">My Pantry</string>
-    <string name="title_suggested">Suggested Recipes</string>
+    <string name="title_suggested">Recipes</string>
     <string name="title_add_item">Add Ingredient</string>
     <string name="title_edit_item">Edit Ingredient</string>
     <string name="title_recipe_detail">Recipe Details</string>

@@ -18,7 +18,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "smart_pantry.db";
     private static final int DATABASE_VERSION = 1;
 
-    // Table: Pantry
     public static final String TABLE_PANTRY = "pantry";
     public static final String COL_PANTRY_ID = "id";
     public static final String COL_PANTRY_NAME = "name";
@@ -26,7 +25,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_PANTRY_UNIT = "unit";
     public static final String COL_PANTRY_EXPIRY = "expiry_date";
 
-    // Table: Recipes
     public static final String TABLE_RECIPES = "recipes";
     public static final String COL_RECIPE_ID = "id";
     public static final String COL_RECIPE_NAME = "name";
@@ -34,7 +32,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_RECIPE_PREP_TIME = "prep_time";
     public static final String COL_RECIPE_DIFFICULTY = "difficulty";
 
-    // Table: Recipe Ingredients
     public static final String TABLE_RECIPE_INGREDIENTS = "recipe_ingredients";
     public static final String COL_RI_ID = "id";
     public static final String COL_RI_RECIPE_ID = "recipe_id";
@@ -81,8 +78,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // --- PANTRY CRUD ---
-
     public long insertPantryItem(PantryItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -127,8 +122,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_PANTRY, COL_PANTRY_ID + " = ?", new String[]{String.valueOf(id)});
     }
 
-    // --- RECIPES & MATCHING ENGINE ---
-
     public List<RecipeIngredient> getIngredientsForRecipe(long recipeId) {
         List<RecipeIngredient> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -148,8 +141,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public List<Recipe> getAvailableRecipes() {
-        List<Recipe> qualifiedRecipes = new ArrayList<>();
+    public List<Recipe> getAllRecipesWithStockStatus(boolean onlyAvailable) {
+        List<Recipe> recipeList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor recipeCursor = db.query(TABLE_RECIPES, null, null, null, null, null, COL_RECIPE_NAME + " ASC");
@@ -162,7 +155,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String difficulty = recipeCursor.getString(recipeCursor.getColumnIndexOrThrow(COL_RECIPE_DIFFICULTY));
 
                 List<RecipeIngredient> required = getIngredientsForRecipe(recipeId);
-                boolean canMake = !required.isEmpty();
+                int missingCount = 0;
 
                 for (RecipeIngredient req : required) {
                     Cursor pantryCheck = db.rawQuery(
@@ -174,64 +167,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         double availableQty = pantryCheck.getDouble(0);
                         pantryCheck.close();
                         if (availableQty < req.getRequiredQuantity()) {
-                            canMake = false;
-                            break;
+                            missingCount++;
                         }
                     } else {
                         if (pantryCheck != null) pantryCheck.close();
-                        canMake = false;
-                        break;
+                        missingCount++;
                     }
                 }
 
-                if (canMake) {
+                boolean canMake = (missingCount == 0 && !required.isEmpty());
+
+                if (!onlyAvailable || canMake) {
                     Recipe r = new Recipe(recipeId, name, instructions, prepTime, difficulty);
                     r.setIngredients(required);
-                    qualifiedRecipes.add(r);
+                    r.setAvailable(canMake);
+                    r.setMissingIngredientsCount(missingCount);
+                    recipeList.add(r);
                 }
             } while (recipeCursor.moveToNext());
             recipeCursor.close();
         }
-        return qualifiedRecipes;
+        return recipeList;
     }
 
-    // --- SEED ENGINE ---
+    public List<Recipe> getAvailableRecipes() {
+        return getAllRecipesWithStockStatus(true);
+    }
 
     private void seedInitialData(SQLiteDatabase db) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         Calendar cal = Calendar.getInstance();
 
-        // 1. Bread (expiring in 2 days)
         cal.setTime(new Date());
         cal.add(Calendar.DAY_OF_YEAR, 2);
         insertPantryDirect(db, "Bread", 6.0, "slices", sdf.format(cal.getTime()));
 
-        // 2. Milk (expiring in 5 days)
         cal.setTime(new Date());
         cal.add(Calendar.DAY_OF_YEAR, 5);
         insertPantryDirect(db, "Milk", 500.0, "ml", sdf.format(cal.getTime()));
 
-        // 3. Eggs (fresh, 14 days)
         cal.setTime(new Date());
         cal.add(Calendar.DAY_OF_YEAR, 14);
         insertPantryDirect(db, "Eggs", 6.0, "pcs", sdf.format(cal.getTime()));
 
-        // 4. Butter (fresh, 30 days)
         cal.setTime(new Date());
         cal.add(Calendar.DAY_OF_YEAR, 30);
         insertPantryDirect(db, "Butter", 100.0, "g", sdf.format(cal.getTime()));
 
-        // 5. Salt (stable staple, 180 days)
         cal.setTime(new Date());
         cal.add(Calendar.DAY_OF_YEAR, 180);
         insertPantryDirect(db, "Salt", 200.0, "g", sdf.format(cal.getTime()));
 
-        // 6. Fresh Cream (expired yesterday to demonstrate the alert badge)
         cal.setTime(new Date());
         cal.add(Calendar.DAY_OF_YEAR, -1);
         insertPantryDirect(db, "Fresh Cream", 100.0, "ml", sdf.format(cal.getTime()));
 
-        // Seed 16 Recipes
         seedRecipes(db);
     }
 
@@ -245,7 +235,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void seedRecipes(SQLiteDatabase db) {
-        // Qualified Matches
         long r1 = insertRecipeDirect(db, "Butter Toast", "1. Toast bread slices until golden brown.\n2. Spread butter evenly across the warm surface.\n3. Serve warm immediately.", 5, "Easy");
         insertReq(db, r1, "Bread", 2.0, "slices");
         insertReq(db, r1, "Butter", 15.0, "g");
@@ -256,7 +245,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insertReq(db, r2, "Butter", 10.0, "g");
         insertReq(db, r2, "Salt", 2.0, "g");
 
-        // Near Misses (1-2 items missing)
         long r3 = insertRecipeDirect(db, "French Toast", "1. Whisk egg, milk, sugar, and a pinch of salt.\n2. Dip bread slices into mixture.\n3. Fry in melted butter until both sides are golden.", 10, "Easy");
         insertReq(db, r3, "Bread", 2.0, "slices");
         insertReq(db, r3, "Eggs", 1.0, "pcs");

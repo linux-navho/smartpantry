@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,8 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
     private RecyclerView rvRecipes;
     private RecipeAdapter adapter;
     private TextView tvEmpty;
+    private ChipGroup chipGroupFilter;
+    private boolean showOnlyAvailable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
         rvRecipes = findViewById(R.id.rvRecipes);
         tvEmpty = findViewById(R.id.tvEmptyRecipes);
+        chipGroupFilter = findViewById(R.id.chipGroupFilter);
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
 
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
@@ -50,6 +54,11 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
             startActivity(intent);
         });
         rvRecipes.setAdapter(adapter);
+
+        chipGroupFilter.setOnCheckedChangeListener((group, checkedId) -> {
+            showOnlyAvailable = (checkedId == R.id.chipAvailable);
+            loadRecipes();
+        });
 
         if (bottomNav != null) {
             bottomNav.setSelectedItemId(R.id.nav_recipes);
@@ -69,22 +78,25 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadAvailableRecipes();
+        loadRecipes();
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
         if (bottomNav != null) {
             bottomNav.setSelectedItemId(R.id.nav_recipes);
         }
     }
 
-    private void loadAvailableRecipes() {
-        List<Recipe> available = dbHelper.getAvailableRecipes();
-        if (available.isEmpty()) {
+    private void loadRecipes() {
+        List<Recipe> list = dbHelper.getAllRecipesWithStockStatus(showOnlyAvailable);
+        if (list.isEmpty()) {
             rvRecipes.setVisibility(View.GONE);
             tvEmpty.setVisibility(View.VISIBLE);
+            tvEmpty.setText(showOnlyAvailable
+                    ? "No recipes can be made with your current pantry stock.\nAdd ingredients to see suggestions!"
+                    : "No recipes found.");
         } else {
             rvRecipes.setVisibility(View.VISIBLE);
             tvEmpty.setVisibility(View.GONE);
-            adapter.updateList(available);
+            adapter.updateList(list);
         }
     }
 }
