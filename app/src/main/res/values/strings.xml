@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Smart Pantry Manager</string>
+
+    <!-- Screen Titles -->
+    <string name="title_pantry">My Pantry</string>
+    <string name="title_add_edit">Add / Edit Ingredient</string>
+    <string name="title_suggested">Suggested Recipes</string>
+    <string name="title_recipe_detail">Recipe Details</string>
+
+    <!-- Navigation & Action Buttons -->
+    <string name="btn_add_ingredient">+ Add Ingredient</string>
+    <string name="btn_view_suggested">View Suggested Recipes</string>
+    <string name="btn_open_detail_sample">Open Sample Recipe Detail</string>
+    <string name="btn_back">Back</string>
+</resources>
