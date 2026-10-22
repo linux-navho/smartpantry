@@ -1,15 +1,43 @@
 <resources>
-    <string name="app_name">Smart Pantry Manager</string>
+    <string name="app_name">Smart Pantry</string>
+
+    <!-- Navigation Titles -->
+    <string name="nav_pantry">My Pantry</string>
+    <string name="nav_recipes">Suggested Recipes</string>
 
     <!-- Screen Titles -->
     <string name="title_pantry">My Pantry</string>
-    <string name="title_add_edit">Add / Edit Ingredient</string>
     <string name="title_suggested">Suggested Recipes</string>
+    <string name="title_add_item">Add Ingredient</string>
+    <string name="title_edit_item">Edit Ingredient</string>
     <string name="title_recipe_detail">Recipe Details</string>
 
-    <!-- Navigation & Action Buttons -->
-    <string name="btn_add_ingredient">+ Add Ingredient</string>
-    <string name="btn_view_suggested">View Suggested Recipes</string>
-    <string name="btn_open_detail_sample">Open Sample Recipe Detail</string>
-    <string name="btn_back">Back</string>
+    <!-- Action Buttons -->
+    <string name="btn_save">Save Ingredient</string>
+    <string name="btn_delete">Delete Ingredient</string>
+    <string name="btn_add_ingredient">Add New Ingredient</string>
+
+    <!-- Empty State Descriptions -->
+    <string name="empty_pantry_title">Pantry is empty</string>
+    <string name="empty_pantry_subtitle">Tap + to track your kitchen ingredients.</string>
+    <string name="empty_recipes_title">No matching recipes</string>
+    <string name="empty_recipes_subtitle">Stock more ingredients to unlock dishes.</string>
+
+    <!-- Form Validation -->
+    <string name="err_empty_name">Ingredient name is required</string>
+    <string name="err_empty_quantity">Quantity is required</string>
+    <string name="err_invalid_quantity">Enter a valid positive number</string>
+    <string name="err_empty_expiry">Expiry date is required</string>
+
+    <!-- Units Array -->
+    <string-array name="units_array">
+        <item>pcs</item>
+        <item>slices</item>
+        <item>g</item>
+        <item>kg</item>
+        <item>ml</item>
+        <item>L</item>
+        <item>cloves</item>
+        <item>can</item>
+    </string-array>
 </resources>

@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Base Monochrome Palette -->
+    <color name="bg_canvas">#0F0F12</color>
+    <color name="bg_surface">#18181B</color>
+    <color name="border_subtle">#27272A</color>
+    <color name="border_focus">#8B5CF6</color>
+
+    <!-- Typography Tokens -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#A1A1AA</color>
+    <color name="text_tertiary">#71717A</color>
+
+    <!-- Accent & Brand Tokens -->
+    <color name="brand_primary">#8B5CF6</color>
+    <color name="brand_primary_variant">#7C3AED</color>
+    <color name="brand_on_primary">#FFFFFF</color>
+
+    <!-- Semantic Status Tokens -->
+    <color name="status_fresh_text">#10B981</color>
+    <color name="status_fresh_bg">#1A10B981</color>
+    <color name="status_fresh_border">#3310B981</color>
+
+    <color name="status_warning_text">#F59E0B</color>
+    <color name="status_warning_bg">#1AF59E0B</color>
+    <color name="status_warning_border">#33F59E0B</color>
+
+    <color name="status_expired_text">#EF4444</color>
+    <color name="status_expired_bg">#1AEF4444</color>
+    <color name="status_expired_border">#33EF4444</color>
 </resources>
