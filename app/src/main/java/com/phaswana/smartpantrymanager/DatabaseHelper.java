@@ -88,6 +88,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_PANTRY, null, cv);
     }
 
+    public PantryItem getPantryItemByName(String name) {
+        if (name == null || name.trim().isEmpty()) return null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_PANTRY, null, "LOWER(TRIM(" + COL_PANTRY_NAME + ")) = LOWER(TRIM(?))",
+                new String[]{name.trim()}, null, null, null, "1");
+
+        PantryItem item = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(COL_PANTRY_ID));
+            String itemName = cursor.getString(cursor.getColumnIndexOrThrow(COL_PANTRY_NAME));
+            double quantity = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_PANTRY_QUANTITY));
+            String unit = cursor.getString(cursor.getColumnIndexOrThrow(COL_PANTRY_UNIT));
+            String expiry = cursor.getString(cursor.getColumnIndexOrThrow(COL_PANTRY_EXPIRY));
+            item = new PantryItem(id, itemName, quantity, unit, expiry);
+            cursor.close();
+        }
+        return item;
+    }
+
     public List<PantryItem> getAllPantryItemsSortedByExpiry() {
         List<PantryItem> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
