@@ -1,43 +1,27 @@
 <resources>
-    <string name="app_name">Smart Pantry</string>
-
-    <!-- Navigation Titles -->
-    <string name="nav_pantry">My Pantry</string>
-    <string name="nav_recipes">Suggested Recipes</string>
-
-    <!-- Screen Titles -->
+    <string name="app_name">Smart Pantry Manager</string>
     <string name="title_pantry">My Pantry</string>
     <string name="title_suggested">Recipes</string>
+    <string name="title_settings">Settings</string>
     <string name="title_add_item">Add Ingredient</string>
     <string name="title_edit_item">Edit Ingredient</string>
     <string name="title_recipe_detail">Recipe Details</string>
 
-    <!-- Action Buttons -->
-    <string name="btn_save">Save Ingredient</string>
-    <string name="btn_delete">Delete Ingredient</string>
-    <string name="btn_add_ingredient">Add New Ingredient</string>
+    <string name="btn_save">SAVE INGREDIENT</string>
+    <string name="btn_delete">DELETE INGREDIENT</string>
+    <string name="btn_add_ingredient">Add Ingredient</string>
+    <string name="empty_pantry_title">Your Pantry is Empty</string>
+    <string name="empty_recipes_title">No Recipes Available</string>
 
-    <!-- Empty State Descriptions -->
-    <string name="empty_pantry_title">Pantry is empty</string>
-    <string name="empty_pantry_subtitle">Tap + to track your kitchen ingredients.</string>
-    <string name="empty_recipes_title">No matching recipes</string>
-    <string name="empty_recipes_subtitle">Stock more ingredients to unlock dishes.</string>
+    <string name="err_empty_name">Please enter an ingredient name</string>
+    <string name="err_invalid_qty">Please enter a valid quantity</string>
+    <string name="err_empty_expiry">Please select an expiry date</string>
 
-    <!-- Form Validation -->
-    <string name="err_empty_name">Ingredient name is required</string>
-    <string name="err_empty_quantity">Quantity is required</string>
-    <string name="err_invalid_quantity">Enter a valid positive number</string>
-    <string name="err_empty_expiry">Expiry date is required</string>
-
-    <!-- Units Array -->
-    <string-array name="units_array">
-        <item>pcs</item>
-        <item>slices</item>
-        <item>g</item>
-        <item>kg</item>
-        <item>ml</item>
-        <item>L</item>
-        <item>cloves</item>
-        <item>can</item>
-    </string-array>
+    <!-- Settings & Profile Strings -->
+    <string name="section_profile">PANTRY PROFILE</string>
+    <string name="section_preferences">PREFERENCES</string>
+    <string name="section_diagnostics">DATABASE &amp; STORAGE</string>
+    <string name="pref_warning_threshold">Expiry Warning Window</string>
+    <string name="pref_default_servings">Default Serving Scaler</string>
+    <string name="btn_reset_data">RESET DEMO DATABASE</string>
 </resources>

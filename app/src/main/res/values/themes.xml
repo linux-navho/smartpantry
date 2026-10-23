@@ -1,16 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.EmptyViewsActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Palette Colors -->
+    <style name="Base.Theme.SmartPantryManager" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Brand Colors -->
         <item name="colorPrimary">@color/brand_primary</item>
-        <item name="colorPrimaryVariant">@color/brand_primary_variant</item>
-        <item name="colorOnPrimary">@color/brand_on_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_primary_dark</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        
+        <!-- Backgrounds -->
         <item name="android:windowBackground">@color/bg_canvas</item>
-
-        <!-- System Window Bar Configuration -->
-        <item name="android:statusBarColor">@color/bg_surface</item>
-        <item name="android:navigationBarColor">@color/bg_surface</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="colorSurface">@color/bg_surface</item>
+        
+        <!-- System Bars (Edge to edge dark look) -->
+        <item name="android:statusBarColor">@color/bg_canvas</item>
+        <item name="android:navigationBarColor">@color/bg_canvas</item>
+        
+        <!-- Text defaults -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
     </style>
 
-    <style name="Theme.EmptyViewsActivity" parent="Base.Theme.EmptyViewsActivity" />
+    <style name="Theme.SmartPantryManager" parent="Base.Theme.SmartPantryManager" />
+    <style name="Theme.EmptyViewsActivity" parent="Base.Theme.SmartPantryManager" />
 </resources>

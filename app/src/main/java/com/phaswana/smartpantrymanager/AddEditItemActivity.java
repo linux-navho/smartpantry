@@ -44,6 +44,7 @@ public class AddEditItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_add_edit_item);
 
         dbHelper = new DatabaseHelper(this);
@@ -87,29 +88,42 @@ public class AddEditItemActivity extends AppCompatActivity {
             highlightMatchingPreset();
         });
 
+        String passedName = getIntent().getStringExtra("EXTRA_ITEM_NAME");
+        double passedQty = getIntent().getDoubleExtra("EXTRA_ITEM_QUANTITY", -1.0);
+
         if (getIntent().hasExtra("EXTRA_ITEM_ID")) {
             itemId = getIntent().getLongExtra("EXTRA_ITEM_ID", -1);
             if (toolbar != null) toolbar.setTitle("Edit Ingredient");
 
-            String name = getIntent().getStringExtra("EXTRA_ITEM_NAME");
-            currentQuantity = getIntent().getDoubleExtra("EXTRA_ITEM_QUANTITY", 1.0);
+            currentQuantity = passedQty > 0 ? passedQty : 1.0;
             selectedExpiryIso = getIntent().getStringExtra("EXTRA_ITEM_EXPIRY");
 
-            applyIngredientSelection(name, false);
+            applyIngredientSelection(passedName, false);
             btnDelete.setVisibility(View.VISIBLE);
             btnDelete.setOnClickListener(v -> confirmDelete());
         } else {
             if (toolbar != null) toolbar.setTitle("Add Ingredient");
             btnDelete.setVisibility(View.GONE);
 
-            List<String> list = IngredientCatalog.getNames();
-            if (!list.isEmpty()) {
-                applyIngredientSelection(list.get(0), true);
-            }
-
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DAY_OF_YEAR, 7);
             selectedExpiryIso = isoFormat.format(cal.getTime());
+
+            if (passedName != null && !passedName.trim().isEmpty()) {
+                // Pre-selected from Recipe Detail missing ingredient click
+                if (passedQty > 0) {
+                    currentQuantity = passedQty;
+                    applyIngredientSelection(passedName, false);
+                } else {
+                    applyIngredientSelection(passedName, true);
+                }
+            } else {
+                // Regular Add click from Pantry FAB
+                List<String> list = IngredientCatalog.getNames();
+                if (!list.isEmpty()) {
+                    applyIngredientSelection(list.get(0), true);
+                }
+            }
         }
 
         renderExpiryDate();
@@ -256,10 +270,8 @@ public class AddEditItemActivity extends AppCompatActivity {
             return;
         }
 
-        // Check if an item with this name already exists in the pantry
         PantryItem existing = dbHelper.getPantryItemByName(selectedIngredientName);
 
-        // If editing an existing row and the name didn't change (or matched itself), just update
         if (itemId != -1 && existing != null && existing.getId() == itemId) {
             PantryItem item = new PantryItem(itemId, selectedIngredientName, currentQuantity, boundUnit, selectedExpiryIso);
             dbHelper.updatePantryItem(item);
@@ -268,13 +280,11 @@ public class AddEditItemActivity extends AppCompatActivity {
             return;
         }
 
-        // If adding fresh but an existing entry already has this name: prompt user
         if (existing != null) {
             showDuplicateItemDialog(existing);
             return;
         }
 
-        // Otherwise insert new row cleanly
         if (itemId == -1) {
             PantryItem item = new PantryItem(selectedIngredientName, currentQuantity, boundUnit, selectedExpiryIso);
             dbHelper.insertPantryItem(item);
@@ -310,7 +320,6 @@ public class AddEditItemActivity extends AppCompatActivity {
                 .setTitle("Ingredient Already Exists")
                 .setMessage(message)
                 .setPositiveButton("Add to Stock", (dialog, which) -> {
-                    // Merge quantities; keep the earlier expiry date so food doesn't spoil unnoticed
                     String earliestExpiry = existing.getExpiryDate().compareTo(selectedExpiryIso) <= 0
                             ? existing.getExpiryDate()
                             : selectedExpiryIso;

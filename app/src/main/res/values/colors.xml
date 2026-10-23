@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base Monochrome Palette -->
-    <color name="bg_canvas">#0F0F12</color>
-    <color name="bg_surface">#18181B</color>
-    <color name="border_subtle">#27272A</color>
-    <color name="border_focus">#8B5CF6</color>
+    <!-- Core Brand -->
+    <color name="brand_primary">#F97316</color>     <!-- Vibrant Burnt Orange/Amber -->
+    <color name="brand_primary_dark">#C2410C</color>
 
-    <!-- Typography Tokens -->
-    <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#A1A1AA</color>
-    <color name="text_tertiary">#71717A</color>
+    <!-- Canvas & Surfaces -->
+    <color name="bg_canvas">#121212</color>         <!-- Deep OLED-friendly Charcoal -->
+    <color name="bg_surface">#1E1E1E</color>        <!-- Elevated Charcoal for Cards -->
+    <color name="divider_color">#2C2C2C</color>     <!-- Subtle borders -->
 
-    <!-- Accent & Brand Tokens -->
-    <color name="brand_primary">#8B5CF6</color>
-    <color name="brand_primary_variant">#7C3AED</color>
-    <color name="brand_on_primary">#FFFFFF</color>
+    <!-- Dynamic Form Tokens -->
+    <color name="border_subtle">#2C2C2C</color>     <!-- Matches divider_color -->
+    <color name="border_focus">#F97316</color>      <!-- Matches brand_primary -->
 
-    <!-- Semantic Status Tokens -->
-    <color name="status_fresh_text">#10B981</color>
-    <color name="status_fresh_bg">#1A10B981</color>
-    <color name="status_fresh_border">#3310B981</color>
+    <!-- Typography -->
+    <color name="text_primary">#F3F4F6</color>      <!-- Crisp Off-White -->
+    <color name="text_secondary">#9CA3AF</color>    <!-- Muted Gray -->
+    <color name="text_tertiary">#6B7280</color>     <!-- Deep Gray for labels -->
 
-    <color name="status_warning_text">#F59E0B</color>
-    <color name="status_warning_bg">#1AF59E0B</color>
-    <color name="status_warning_border">#33F59E0B</color>
+    <!-- Status Badges & Borders -->
+    <color name="status_fresh_bg">#064E3B</color>
+    <color name="status_fresh_text">#34D399</color>
+    <color name="status_fresh_border">#059669</color>
 
-    <color name="status_expired_text">#EF4444</color>
-    <color name="status_expired_bg">#1AEF4444</color>
-    <color name="status_expired_border">#33EF4444</color>
+    <color name="status_warning_bg">#78350F</color>
+    <color name="status_warning_text">#FBBF24</color>
+    <color name="status_warning_border">#D97706</color>
+
+    <color name="status_expired_bg">#7F1D1D</color>
+    <color name="status_expired_text">#F87171</color>
+    <color name="status_expired_border">#DC2626</color>
 </resources>

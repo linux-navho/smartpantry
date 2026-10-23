@@ -22,12 +22,12 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
     private RecyclerView rvRecipes;
     private RecipeAdapter adapter;
     private TextView tvEmpty;
-    private ChipGroup chipGroupFilter;
     private boolean showOnlyAvailable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_suggested_recipes);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -40,7 +40,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
         rvRecipes = findViewById(R.id.rvRecipes);
         tvEmpty = findViewById(R.id.tvEmptyRecipes);
-        chipGroupFilter = findViewById(R.id.chipGroupFilter);
+        ChipGroup chipGroupFilter = findViewById(R.id.chipGroupFilter);
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
 
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
@@ -66,6 +66,11 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_pantry) {
                     Intent intent = new Intent(SuggestedRecipesActivity.this, PantryListActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                    return true;
+                } else if (itemId == R.id.nav_settings) {
+                    Intent intent = new Intent(SuggestedRecipesActivity.this, SettingsActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                     return true;
